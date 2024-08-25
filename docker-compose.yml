@@ -1,0 +1,47 @@
+version: "2"
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    ports:
+      - "9092:9092"  # Exposes Kafka on localhost:9092 for external access
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: "INTERNAL://:29092,EXTERNAL://:9092"
+      KAFKA_ADVERTISED_LISTENERS: "INTERNAL://kafka:29092,EXTERNAL://localhost:9092"
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: "INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT"
+      KAFKA_INTER_BROKER_LISTENER_NAME: "INTERNAL"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      # High throughput settings
+      KAFKA_NUM_NETWORK_THREADS: 3
+      KAFKA_NUM_IO_THREADS: 8
+      KAFKA_SOCKET_SEND_BUFFER_BYTES: 102400
+      KAFKA_SOCKET_RECEIVE_BUFFER_BYTES: 102400
+      KAFKA_SOCKET_REQUEST_MAX_BYTES: 104857600
+      KAFKA_LOG_RETENTION_HOURS: 168
+      KAFKA_LOG_SEGMENT_BYTES: 1073741824
+      KAFKA_LOG_RETENTION_CHECK_INTERVAL_MS: 300000
+      KAFKA_NUM_PARTITIONS: 3
+      KAFKA_MESSAGE_MAX_BYTES: 1000012
+      KAFKA_REPLICA_FETCH_MAX_BYTES: 1048576
+      KAFKA_REPLICA_FETCH_WAIT_MAX_MS: 500
+      KAFKA_MAX_POLL_RECORDS: 500
+    volumes:
+      - ./kafka-data:/var/lib/kafka/data
+  kafdrop:
+      image: obsidiandynamics/kafdrop
+      restart: "no"
+      ports:
+        - "9000:9000"  # Exposes Kafdrop on localhost:9000 for external access
+      environment:
+        KAFKA_BROKERCONNECT: "kafka:29092"  # Use Docker service name
+      depends_on:
+        - "kafka"
