@@ -1,0 +1,42 @@
+// opentelemetry.js
+
+import { WebTracerProvider } from "@opentelemetry/sdk-trace-web";
+import { registerInstrumentations } from "@opentelemetry/instrumentation";
+import { FetchInstrumentation } from "@opentelemetry/instrumentation-fetch";
+import { XMLHttpRequestInstrumentation } from "@opentelemetry/instrumentation-xml-http-request";
+import { Resource } from "@opentelemetry/resources";
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
+import { SimpleSpanProcessor } from "@opentelemetry/sdk-trace-base";
+
+// Step 1: Define resource attributes
+const resource = new Resource({
+  "service.name": "your-react-app",
+  "service.version": "1.0.0",
+  "deployment.environment": "production",
+});
+
+// Step 2: Initialize the tracer provider
+const provider = new WebTracerProvider({
+  resource,
+});
+
+// Step 3: Configure the exporter
+const exporter = new OTLPTraceExporter({
+  url: "http://localhost:3001/v1/logs", // Replace with your collector's endpoint
+});
+
+// Step 4: Add a span processor and exporter to the provider
+provider.addSpanProcessor(new SimpleSpanProcessor(exporter));
+
+// Step 5: Register the tracer provider
+provider.register();
+
+// Step 6: Register automatic instrumentations
+registerInstrumentations({
+  instrumentations: [
+    new FetchInstrumentation(),
+    new XMLHttpRequestInstrumentation(),
+  ],
+});
+
+export const tracer = provider.getTracer("react-app-tracer");

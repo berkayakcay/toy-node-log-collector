@@ -1,0 +1,80 @@
+import { LoggerProvider } from '@opentelemetry/sdk-logs';
+import { OTLPLogExporter } from '@opentelemetry/exporter-logs-otlp-http';
+import { Resource } from '@opentelemetry/resources';
+import { SeverityNumber } from '@opentelemetry/api-logs';
+import { BatchLogRecordProcessor } from '@opentelemetry/sdk-logs';
+import { context as otelContext } from '@opentelemetry/api';
+
+export const logLevels = {
+  DEBUG: 'debug',
+  INFO: 'info',
+  WARN: 'warn',
+  ERROR: 'error',
+} as const;
+
+type LogLevel = typeof logLevels[keyof typeof logLevels];
+
+// Define resource attributes
+const resource = new Resource({
+  'service.name': 'your-react-app',
+  'service.version': '1.0.0',
+  'deployment.environment': process.env.NODE_ENV || 'development',
+});
+
+// Initialize the LoggerProvider with the resource
+const loggerProvider = new LoggerProvider({ resource });
+
+// Configure the OTLP Log Exporter
+const exporter = new OTLPLogExporter({
+  url: 'http://localhost:3001/v1/logs', // Adjust to your backend endpoint
+  headers: {}, // Include any necessary headers
+});
+
+// Add a LogRecordProcessor to the provider
+loggerProvider.addLogRecordProcessor(new BatchLogRecordProcessor(exporter));
+
+// Get a logger instance
+const otelLogger = loggerProvider.getLogger('your-react-app-logger');
+
+// Map log levels to OpenTelemetry severity numbers
+const severityMap: Record<LogLevel, SeverityNumber> = {
+  debug: SeverityNumber.DEBUG,
+  info: SeverityNumber.INFO,
+  warn: SeverityNumber.WARN,
+  error: SeverityNumber.ERROR,
+};
+
+class OpenTelemetryLogger {
+  log(level: LogLevel, message: string, attributes: Record<string, any> = {}) {
+    const severityNumber = severityMap[level];
+    const severityText = level.toUpperCase();
+
+    otelLogger.emit({
+      severityNumber,
+      severityText,
+      body: message,
+      attributes,
+      // Optionally associate the log record with the active context
+      context: otelContext.active(),
+    });
+  }
+
+  debug(message: string, attributes: Record<string, any> = {}) {
+    this.log('debug', message, attributes);
+  }
+
+  info(message: string, attributes: Record<string, any> = {}) {
+    this.log('info', message, attributes);
+  }
+
+  warn(message: string, attributes: Record<string, any> = {}) {
+    this.log('warn', message, attributes);
+  }
+
+  error(message: string, attributes: Record<string, any> = {}) {
+    this.log('error', message, attributes);
+  }
+}
+
+// Export the logger instance
+export const logger = new OpenTelemetryLogger();

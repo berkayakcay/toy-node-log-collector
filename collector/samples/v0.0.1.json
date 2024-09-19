@@ -1,0 +1,22 @@
+{
+    "sessionId": "abcd1234",
+    "userId": "user789",
+    "timestamp": "2024-08-21T14:30:00Z",
+    "logLevel": "error",
+    "message": "Failed to load component",
+    "stackTrace": "Error: Component failed to load\n    at Component.js:45:13",
+    "url": "/dashboard",
+    "appVersion": "1.2.3",
+    "environment": "production",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36",
+    "deviceType": "desktop",
+    "screenResolution": "1920x1080",
+    "os": "Windows 10",
+    "customData": {
+        "featureFlag": "newDashboard"
+    },
+    "tags": [
+        "dashboard",
+        "critical"
+    ]
+}

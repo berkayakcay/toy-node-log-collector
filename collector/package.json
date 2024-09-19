@@ -1,0 +1,27 @@
+{
+  "name": "toy-node-log-collector",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node --max-old-space-size=666 index.js",
+    "inspect": "node --inspect --max-old-space-size=666 index.js",
+    "doctor": "clinic doctor --on-port 'autocannon -c 100 -d 20 -p 10 -m POST -H 'Content-Type: application/json' -i .\\samples\\v0.0.1.json  http://localhost:3000/log' -- node --max-old-space-size=666 index.js",
+    "doctorx": "clinic doctor -- node --max-old-space-size=666 index.js",
+    "bubbleprof": "clinic bubbleprof -- node --max-old-space-size=666 index.js",
+    "bubbleprofx": "clinic bubbleprof --on-port  'autocannon -c 100 -d 20 -p 10 -m POST -H 'Content-Type: application/json' -i ./samples/v0.0.1.json  http://localhost:3000/log' -- node --max-old-space-size=666 index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@fastify/compress": "^7.0.3",
+    "@fastify/cors": "^9.0.1",
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/sdk-node": "^0.53.0",
+    "compression": "^1.7.4",
+    "dotenv": "^16.4.5",
+    "fastify": "^4.28.1",
+    "kafkajs": "^2.2.4"
+  }
+}
