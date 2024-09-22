@@ -1,5 +1,5 @@
 import { WebTracerProvider } from "@opentelemetry/sdk-trace-web";
-import { LoggerProvider } from "@opentelemetry/sdk-logs";
+import { ConsoleLogRecordExporter, LoggerProvider, SimpleLogRecordProcessor } from "@opentelemetry/sdk-logs";
 import { Resource } from "@opentelemetry/resources";
 import { SimpleSpanProcessor } from "@opentelemetry/sdk-trace-base";
 import { BatchLogRecordProcessor } from "@opentelemetry/sdk-logs";
@@ -23,7 +23,7 @@ export function initializeOpenTelemetry() {
 
   // Step 1: Define resource attributes
   const resource = new Resource({
-    "service.name": "your-react-app",
+    "service.name": "logx-sample-react-app",
     "service.version": "1.0.0",
     "deployment.environment": process.env.NODE_ENV || "development",
   });
@@ -35,7 +35,7 @@ export function initializeOpenTelemetry() {
 
   // Configure the trace exporter
   const traceExporter = new OTLPTraceExporter({
-    url: "http://localhost:3001/v1/traces", // Correct traces endpoint
+    url: "http://localhost:8080/otlp-http/v1/traces", // Correct traces endpoint
   });
 
   // Add a span processor and exporter to the tracer provider
@@ -64,8 +64,16 @@ export function initializeOpenTelemetry() {
     new BatchLogRecordProcessor(logExporter)
   );
 
+  loggerProvider.addLogRecordProcessor(
+    new SimpleLogRecordProcessor(new ConsoleLogRecordExporter())
+  );
+
+  
+
   // Set the global logger provider
   logs.setGlobalLoggerProvider(loggerProvider);
+
+
 
   // Register automatic instrumentations
   registerInstrumentations({

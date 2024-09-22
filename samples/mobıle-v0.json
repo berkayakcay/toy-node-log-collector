@@ -1,0 +1,31 @@
+{
+    "timestamp": "2023-09-25T14:22:10.123Z",
+    "severityNumber": 17,
+    "severityText": "ERROR",
+    "body": "NullReferenceException in HomeScreen",
+    "attributes": {
+        "traceId": "5cd85f3677a24ea6b2ce839d1f0e5737",
+        "spanId": "01e067bb1ba912c8",
+        "sessionId": "session789",
+        "userId": "user789",
+        "deviceId": "efgh5678-1234-90ab-cdef-1234ijkl5678",
+        "installationId": "install4567",
+        "component": "HomeScreen",
+        "action": "load",
+        "screenName": "HomeScreen",
+        "applicationVersion": "2.1.0",
+        "environment": "production",
+        "platform": "Android",
+        "deviceManufacturer": "Samsung",
+        "deviceModel": "SM-G998B",
+        "osName": "Android",
+        "osVersion": "11",
+        "isEmulator": false,
+        "locale": "en-GB",
+        "networkStatus": "online",
+        "errorName": "NullReferenceException",
+        "errorMessage": "Object reference not set to an instance of an object",
+        "errorStack": "at HomeScreen.cs:50",
+        "isFatal": true
+    }
+}

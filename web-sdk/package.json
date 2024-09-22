@@ -1,0 +1,21 @@
+{
+  "name": "logx-web-sdk",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [
+    "logger",
+    "OpenTelemetry"
+  ],
+  "author": "Berkay AKCAY",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/api-logs": "^0.53.0",
+    "@opentelemetry/resources": "^1.26.0",
+    "@opentelemetry/sdk-trace-web": "^1.26.0"
+  }
+}

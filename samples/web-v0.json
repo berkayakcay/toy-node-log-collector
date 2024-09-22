@@ -1,0 +1,26 @@
+{
+    "timestamp": "2023-09-25T12:34:56.789Z",
+    "severityNumber": 9,
+    "severityText": "INFO",
+    "body": "User clicked the 'Sign Up' button",
+    "attributes": {
+        "traceId": "4bf92f3577b34da6a3ce929d0e0e4736",
+        "spanId": "00f067aa0ba902b7",
+        "sessionId": "session456",
+        "userId": "user123",
+        "component": "SignupPage",
+        "action": "click",
+        "elementId": "signupButton",
+        "pageUrl": "https://www.example.com/signup",
+        "applicationVersion": "1.0.0",
+        "environment": "production",
+        "browserName": "Chrome",
+        "browserVersion": "93.0.4577.63",
+        "osName": "Windows",
+        "osVersion": "10",
+        "deviceType": "Desktop",
+        "screenResolution": "1920x1080",
+        "locale": "en-US",
+        "networkStatus": "online"
+    }
+}
